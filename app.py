@@ -44,7 +44,7 @@ with st.form("form_obesitas"):
     merokok = st.selectbox("Apakah Anda merokok", ["Ya", "Tidak"])
     smoke = 1 if merokok == "Ya" else 0
 
-    air = st.selectbox("Berapa liter air yang Anda minum setiap hari", [1 Liter, 2 Liter, 3 Liter, 4 Liter, 5 Liter])
+    air = st.selectbox("Berapa liter air yang Anda minum setiap hari", [1 , 2 , 3 , 4 , 5 ])
 
     pantau_kalori = st.selectbox("Apakah Anda memantau kalori harian Anda", ["Ya", "Tidak"])
     scc = 1 if pantau_kalori == "Ya" else 0
