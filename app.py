@@ -12,7 +12,7 @@ scaler = joblib.load("scaler.pkl")
 # Judul Aplikasi
 # ========================
 st.title("Prediksi Tingkat Obesitas")
-st.write("Isi formulir berikut untuk memprediksi tingkat obesitas berdasarkan data diri dan gaya hidup Anda.")
+st.write("Masukkan informasi seputar diri Anda dan gaya hidup untuk memprediksi tingkat obesitas.")
 
 # ========================
 # Form Input
@@ -33,8 +33,10 @@ with st.form("form_obesitas"):
     favc = st.selectbox("Apakah Anda sering mengonsumsi makanan tinggi kalori", ["Ya", "Tidak"])
     favc = 1 if favc == "Ya" else 0
 
-    fcvc = st.number_input("Seberapa sering Anda makan sayur antara 1 sampai 3", min_value=1.0, max_value=3.0, value=2.0)
-    ncp = st.number_input("Berapa kali Anda makan utama dalam sehari", min_value=1.0, max_value=4.0, value=3.0)
+    sayur = st.selectbox("Seberapa sering Anda makan sayur", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
+    fcvc = {"Tidak pernah": 1.0, "Jarang": 1.5, "Sering": 2.5, "Selalu": 3.0}[sayur]
+
+    ncp = st.selectbox("Berapa kali Anda makan utama dalam sehari", [1, 2, 3, 4, 5, 6])
 
     ngemil = st.selectbox("Seberapa sering Anda makan camilan atau makanan cepat saji", ["Tidak pernah", "Kadang-kadang", "Sering", "Selalu"])
     caec = {"Tidak pernah": 0, "Kadang-kadang": 1, "Sering": 2, "Selalu": 3}[ngemil]
@@ -42,13 +44,16 @@ with st.form("form_obesitas"):
     merokok = st.selectbox("Apakah Anda merokok", ["Ya", "Tidak"])
     smoke = 1 if merokok == "Ya" else 0
 
-    air = st.number_input("Berapa liter air yang Anda minum setiap hari", min_value=1.0, max_value=5.0, value=2.0)
+    air = st.selectbox("Berapa liter air yang Anda minum setiap hari", [1, 2, 3, 4, 5])
 
     pantau_kalori = st.selectbox("Apakah Anda memantau kalori harian Anda", ["Ya", "Tidak"])
     scc = 1 if pantau_kalori == "Ya" else 0
 
-    aktivitas = st.number_input("Seberapa sering Anda beraktivitas fisik dalam seminggu", min_value=0.0, max_value=3.0, value=1.0)
-    gadget = st.number_input("Berapa jam Anda menggunakan perangkat teknologi setiap hari", min_value=0.0, max_value=24.0, value=3.0)
+    aktivitas_fisik = st.selectbox("Seberapa sering Anda beraktivitas fisik dalam seminggu", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
+    faf = {"Tidak pernah": 0.0, "Jarang": 1.0, "Sering": 2.0, "Selalu": 3.0}[aktivitas_fisik]
+
+    gadget = st.number_input("Berapa menit Anda menggunakan perangkat teknologi setiap hari", min_value=0, max_value=1440, value=180)
+    tue = round(gadget / 60, 2)  # konversi ke jam
 
     alkohol = st.selectbox("Seberapa sering Anda mengonsumsi minuman beralkohol", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
     calc = {"Tidak pernah": 0, "Jarang": 1, "Sering": 2, "Selalu": 3}[alkohol]
@@ -66,7 +71,7 @@ if submit:
         usia, gender, tinggi, berat,
         calc, favc, fcvc, ncp,
         scc, smoke, air, family_history,
-        aktivitas, gadget, caec, mtrans
+        faf, tue, caec, mtrans
     ]])
 
     scaled = scaler.transform(data)
