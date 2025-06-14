@@ -36,7 +36,7 @@ with st.form("form_obesitas"):
     sayur = st.selectbox("Seberapa sering Anda makan sayur", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
     fcvc = {"Tidak pernah": 1.0, "Jarang": 1.5, "Sering": 2.5, "Selalu": 3.0}[sayur]
 
-    ncp = st.selectbox("Berapa kali Anda makan utama dalam sehari", [1, 2, 3, 4, 5, 6])
+    ncp = st.selectbox("Berapa kali Anda makan utama dalam sehari", [1 kali, 2 kali, 3 kali, 4 kali, 5 kali, 6 kali])
 
     ngemil = st.selectbox("Seberapa sering Anda makan camilan atau makanan cepat saji", ["Tidak pernah", "Kadang-kadang", "Sering", "Selalu"])
     caec = {"Tidak pernah": 0, "Kadang-kadang": 1, "Sering": 2, "Selalu": 3}[ngemil]
@@ -44,7 +44,7 @@ with st.form("form_obesitas"):
     merokok = st.selectbox("Apakah Anda merokok", ["Ya", "Tidak"])
     smoke = 1 if merokok == "Ya" else 0
 
-    air = st.selectbox("Berapa liter air yang Anda minum setiap hari", [1, 2, 3, 4, 5])
+    air = st.selectbox("Berapa liter air yang Anda minum setiap hari", [1 Liter, 2 Liter, 3 Liter, 4 Liter, 5 Liter])
 
     pantau_kalori = st.selectbox("Apakah Anda memantau kalori harian Anda", ["Ya", "Tidak"])
     scc = 1 if pantau_kalori == "Ya" else 0
