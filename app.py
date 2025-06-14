@@ -36,7 +36,7 @@ with st.form("form_obesitas"):
     sayur = st.selectbox("Seberapa sering Anda makan sayur", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
     fcvc = {"Tidak pernah": 1.0, "Jarang": 1.5, "Sering": 2.5, "Selalu": 3.0}[sayur]
 
-    ncp = st.selectbox("Berapa kali Anda makan utama dalam sehari", [1 kali, 2 kali, 3 kali, 4 kali, 5 kali, 6 kali])
+    ncp = st.selectbox("Berapa kali Anda makan utama dalam sehari", [1 , 2 , 3 , 4 , 5 , 6 ])
 
     ngemil = st.selectbox("Seberapa sering Anda makan camilan atau makanan cepat saji", ["Tidak pernah", "Kadang-kadang", "Sering", "Selalu"])
     caec = {"Tidak pernah": 0, "Kadang-kadang": 1, "Sering": 2, "Selalu": 3}[ngemil]
