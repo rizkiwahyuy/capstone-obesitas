@@ -9,71 +9,70 @@ model = joblib.load("best_model_rf.pkl")
 scaler = joblib.load("scaler.pkl")
 
 # ========================
-# Judul
+# Judul Aplikasi
 # ========================
-st.markdown("<h1 style='text-align: center; color: teal;'>Prediksi Tingkat Obesitas</h1>", unsafe_allow_html=True)
-st.write("Isi formulir di bawah ini untuk memprediksi tingkat obesitas berdasarkan gaya hidup Anda.")
+st.title("Prediksi Tingkat Obesitas")
+st.write("Isi formulir berikut untuk memprediksi tingkat obesitas berdasarkan data diri dan gaya hidup Anda.")
 
 # ========================
 # Form Input
 # ========================
-with st.form("obesity_form"):
-    st.markdown("### Informasi Pengguna")
+with st.form("form_obesitas"):
+    st.markdown("### Data Diri dan Kebiasaan")
 
-    age = st.number_input("Usia", 10, 100, 25)
-    gender = st.selectbox("Jenis Kelamin", ["Perempuan", "Laki-laki"])
-    gender = 1 if gender == "Laki-laki" else 0
+    usia = st.number_input("Usia", min_value=10, max_value=100, value=25)
+    jenis_kelamin = st.selectbox("Jenis kelamin", ["Perempuan", "Laki-laki"])
+    gender = 1 if jenis_kelamin == "Laki-laki" else 0
 
-    height = st.number_input("Tinggi Badan (cm)", 100, 250, 165) / 100
-    weight = st.number_input("Berat Badan (kg)", 30, 200, 65)
+    tinggi = st.number_input("Tinggi badan dalam cm", min_value=100, max_value=250, value=165) / 100
+    berat = st.number_input("Berat badan dalam kilogram", min_value=30, max_value=200, value=65)
 
-    family_history = st.selectbox("Riwayat Keluarga Obesitas", ["Ya", "Tidak"])
-    family_history = 1 if family_history == "Ya" else 0
+    riwayat_keluarga = st.selectbox("Apakah ada riwayat keluarga obesitas", ["Ya", "Tidak"])
+    family_history = 1 if riwayat_keluarga == "Ya" else 0
 
-    favc = st.selectbox("Sering Konsumsi Makanan Tinggi Kalori", ["Ya", "Tidak"])
+    favc = st.selectbox("Apakah Anda sering mengonsumsi makanan tinggi kalori", ["Ya", "Tidak"])
     favc = 1 if favc == "Ya" else 0
 
-    fcvc = st.number_input("Frekuensi Makan Sayur (1–3)", 1.0, 3.0, 2.0)
-    ncp = st.number_input("Jumlah Makan Utama per Hari (1–4)", 1.0, 4.0, 3.0)
+    fcvc = st.number_input("Seberapa sering Anda makan sayur antara 1 sampai 3", min_value=1.0, max_value=3.0, value=2.0)
+    ncp = st.number_input("Berapa kali Anda makan utama dalam sehari", min_value=1.0, max_value=4.0, value=3.0)
 
-    caec = st.selectbox("Ngemil / Fast Food", ["no", "Sometimes", "Frequently", "Always"])
-    caec = {"no": 0, "Sometimes": 1, "Frequently": 2, "Always": 3}[caec]
+    ngemil = st.selectbox("Seberapa sering Anda makan camilan atau makanan cepat saji", ["Tidak pernah", "Kadang-kadang", "Sering", "Selalu"])
+    caec = {"Tidak pernah": 0, "Kadang-kadang": 1, "Sering": 2, "Selalu": 3}[ngemil]
 
-    smoke = st.selectbox("Merokok", ["Ya", "Tidak"])
-    smoke = 1 if smoke == "Ya" else 0
+    merokok = st.selectbox("Apakah Anda merokok", ["Ya", "Tidak"])
+    smoke = 1 if merokok == "Ya" else 0
 
-    ch2o = st.number_input("Air Minum per Hari (liter)", 1.0, 5.0, 2.0)
+    air = st.number_input("Berapa liter air yang Anda minum setiap hari", min_value=1.0, max_value=5.0, value=2.0)
 
-    scc = st.selectbox("Pantau Kalori Harian", ["Ya", "Tidak"])
-    scc = 1 if scc == "Ya" else 0
+    pantau_kalori = st.selectbox("Apakah Anda memantau kalori harian Anda", ["Ya", "Tidak"])
+    scc = 1 if pantau_kalori == "Ya" else 0
 
-    faf = st.number_input("Aktivitas Fisik Mingguan (0–3)", 0.0, 3.0, 1.0)
-    tue = st.number_input("Durasi Gadget per Hari (jam)", 0.0, 24.0, 3.0)
+    aktivitas = st.number_input("Seberapa sering Anda beraktivitas fisik dalam seminggu", min_value=0.0, max_value=3.0, value=1.0)
+    gadget = st.number_input("Berapa jam Anda menggunakan perangkat teknologi setiap hari", min_value=0.0, max_value=24.0, value=3.0)
 
-    calc = st.selectbox("Konsumsi Alkohol", ["Never", "Rarely", "Frequently", "Always"])
-    calc = {"Never": 0, "Rarely": 1, "Frequently": 2, "Always": 3}[calc]
+    alkohol = st.selectbox("Seberapa sering Anda mengonsumsi minuman beralkohol", ["Tidak pernah", "Jarang", "Sering", "Selalu"])
+    calc = {"Tidak pernah": 0, "Jarang": 1, "Sering": 2, "Selalu": 3}[alkohol]
 
-    mtrans = st.selectbox("Transportasi", ["Walking", "Public_Transportation", "Automobile", "Bike", "Motorbike"])
-    mtrans = {"Walking": 0, "Public_Transportation": 1, "Automobile": 2, "Bike": 3, "Motorbike": 4}[mtrans]
+    transportasi = st.selectbox("Transportasi yang paling sering Anda gunakan", ["Jalan kaki", "Transportasi umum", "Mobil", "Sepeda", "Motor"])
+    mtrans = {"Jalan kaki": 0, "Transportasi umum": 1, "Mobil": 2, "Sepeda": 3, "Motor": 4}[transportasi]
 
-    # Tombol submit
-    submitted = st.form_submit_button("Prediksi")
+    submit = st.form_submit_button("Prediksi")
 
 # ========================
 # Prediksi
 # ========================
-if submitted:
-    input_data = np.array([[
-        age, gender, height, weight,
+if submit:
+    data = np.array([[
+        usia, gender, tinggi, berat,
         calc, favc, fcvc, ncp,
-        scc, smoke, ch2o, family_history,
-        faf, tue, caec, mtrans
+        scc, smoke, air, family_history,
+        aktivitas, gadget, caec, mtrans
     ]])
 
-    input_scaled = scaler.transform(input_data)
-    prediction = model.predict(input_scaled)[0]
+    scaled = scaler.transform(data)
+    pred = model.predict(scaled)[0]
 
-    kategori = {
+    hasil = {
         0: "Berat Badan Kurang",
         1: "Berat Badan Normal",
         2: "Kelebihan Berat Badan Tingkat I",
@@ -84,4 +83,4 @@ if submitted:
     }
 
     st.markdown("---")
-    st.success(f"Hasil Prediksi: **{kategori[prediction]}**")
+    st.success(f"Hasil Prediksi: {hasil[pred]}")
